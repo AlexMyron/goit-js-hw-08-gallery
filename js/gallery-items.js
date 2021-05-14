@@ -1,4 +1,5 @@
-export default [
+// export default
+const gallery = [
   {
     preview:
       'https://cdn.pixabay.com/photo/2019/05/14/16/43/himilayan-blue-poppy-4202825__340.jpg',
@@ -63,3 +64,89 @@ export default [
     description: 'Lighthouse Coast Sea',
   },
 ];
+
+// -----------------------------------------------------
+
+
+const galleryContainerEl = document.querySelector('.js-gallery');
+const modalEl = document.querySelector('.js-lightbox');
+const closeModalBtn = modalEl.querySelector('button[data-action="close-lightbox"]')
+const overlayEl = document.querySelector('.lightbox__overlay')
+
+
+
+galleryContainerEl.addEventListener('click', addOriginalLink);
+closeModalBtn.addEventListener('click', onClickModalClose);
+window.addEventListener('keydown', onKeydownModalClose);
+overlayEl.addEventListener('click', onClickOverlayModalClose)
+
+renderMarkup(galleryContainerEl, gallery, createMarkup);
+
+
+
+
+
+function createMarkup(array) {
+  return array.map(({ preview, original, description }) => {
+    return `
+    <li class="gallery__item">
+      <a class="gallery__link" href="${original}">
+      <img class="gallery__image" src="${preview}"
+      data-source="${original}" alt="${description}" />
+      </a>
+    </li>
+    `
+  }).join('');
+}
+
+function renderMarkup(el, array, callback) {
+  el.insertAdjacentHTML('beforeend', callback(array))
+}
+
+function addOriginalLink(e) {
+  e.preventDefault()
+  
+  const img = e.target;
+  const isImage = img.classList.contains('gallery__image')
+
+  if (!isImage) {    
+    return
+  }
+
+  onClickModalOpen(img.dataset.source);
+}
+
+function onClickModalOpen(source) {
+  const modalImgEl = modalEl.querySelector('.lightbox__image')
+  modalImgEl.src = '';
+  modalEl.classList.add('is-open');
+  
+  modalImgEl.src = source;
+  
+}
+
+function onClickModalClose(e) {
+
+  modalEl.classList.remove('is-open')
+}
+
+function onKeydownModalClose(e) {
+  if (e.code !== 'Escape') {
+    return
+  }
+
+  modalEl.classList.remove('is-open')
+}
+
+function onClickOverlayModalClose(e) {
+  console.log(e.target)
+  if (!e.target.classList.contains('lightbox__overlay')) {
+    return
+  }
+  modalEl.classList.remove('is-open');
+}
+
+// console.log(closeModalBtn)
+
+// console.log(createMarkup(gallery))
+// console.log(gallery[0].description)
