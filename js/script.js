@@ -1,4 +1,4 @@
-import { gallery } from './gallery-items.js';
+import gallery from './gallery-items.js';
 
 // const srcArray = gallery.map(el => el.original);
 
