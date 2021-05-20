@@ -65,7 +65,6 @@ function onClickModalClose(e) {
 }
 
 function onClickOverlayModalClose(e) {
-  console.log(e.target);
   if (e.target.classList.contains('lightbox__image')) {
     return;
   }
@@ -73,20 +72,21 @@ function onClickOverlayModalClose(e) {
 }
 
 function onKeydownNextImg(e) {
-  if (e.code !== 'ArrowRight') {
+  if (
+    e.code !== 'ArrowRight' ||
+    modalImgEl.src === arrOfSrces[arrOfSrces.length - 1]
+  ) {
     return;
   }
 
-  for (let i = 0; i < arrOfSrces.length; i += 1) {
-    if (modalImgEl.src === arrOfSrces[arrOfSrces.length - 1]) {
-      return;
-    }
-
-    if (modalImgEl.src === arrOfSrces[i]) {
+  let bufferValue;
+  arrOfSrces.forEach((source, idx) => {
+    if (modalImgEl.src === source) {
       modalImgEl.src = '';
-      return (modalImgEl.src = arrOfSrces[i + 1]);
+      bufferValue = arrOfSrces[idx + 1];
     }
-  }
+  });
+  return (modalImgEl.src = bufferValue);
 }
 
 function onKeydownPrewImg(e) {
@@ -94,10 +94,10 @@ function onKeydownPrewImg(e) {
     return;
   }
 
-  for (let i = 0; i < arrOfSrces.length; i += 1) {
-    if (modalImgEl.src === arrOfSrces[i]) {
+  arrOfSrces.forEach((source, idx) => {
+    if (modalImgEl.src === source) {
       modalImgEl.src = '';
-      return (modalImgEl.src = arrOfSrces[i - 1]);
+      return (modalImgEl.src = arrOfSrces[idx - 1]);
     }
-  }
+  });
 }
