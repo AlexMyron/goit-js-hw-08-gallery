@@ -47,28 +47,40 @@ function onClickModalOpen(e) {
   }
 
   modalEl.classList.add('is-open');
+
+  updateAtributes(e);
+}
+
+function updateAtributes(e) {
   modalImgEl.src = e.target.dataset.source;
+  modalImgEl.alt = e.target.alt;
 }
 
 function onKeydownBtnModalClose(e) {
   if (e.code !== 'Escape') {
     return;
   }
-  modalEl.classList.remove('is-open');
+  closeModal();
 }
 
 function onClickModalClose(e) {
   if (e.target.dataset.action !== 'close-lightbox') {
     return;
   }
-  modalEl.classList.remove('is-open');
+  closeModal();
 }
 
 function onClickOverlayModalClose(e) {
   if (e.target.classList.contains('lightbox__image')) {
     return;
   }
+  closeModal();
+}
+
+function closeModal() {
   modalEl.classList.remove('is-open');
+  modalImgEl.alt = '';
+  modalImgEl.src = '';
 }
 
 function onKeydownNextImg(e) {
