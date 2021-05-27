@@ -14,6 +14,7 @@ window.addEventListener('keydown', onKeydownPrewImg);
 const markupString = createMarkup(gallery);
 renderMarkup(markupString, galleryEl);
 const arrOfSrces = gallery.map(e => e.original);
+const arrOfDescr = gallery.map(e => e.description);
 
 function createMarkup(arr) {
   return arr
@@ -48,10 +49,10 @@ function onClickModalOpen(e) {
 
   modalEl.classList.add('is-open');
 
-  updateAtributes(e);
+  updateAttr(e);
 }
 
-function updateAtributes(e) {
+function updateAttr(e) {
   modalImgEl.src = e.target.dataset.source;
   modalImgEl.alt = e.target.alt;
 }
@@ -79,6 +80,10 @@ function onClickOverlayModalClose(e) {
 
 function closeModal() {
   modalEl.classList.remove('is-open');
+  clearAttr();
+}
+
+function clearAttr() {
   modalImgEl.alt = '';
   modalImgEl.src = '';
 }
@@ -94,7 +99,8 @@ function onKeydownNextImg(e) {
   let bufferValue;
   arrOfSrces.forEach((source, idx) => {
     if (modalImgEl.src === source) {
-      modalImgEl.src = '';
+      clearAttr();
+      modalImgEl.alt = arrOfDescr[idx + 1];
       bufferValue = arrOfSrces[idx + 1];
     }
   });
@@ -108,7 +114,8 @@ function onKeydownPrewImg(e) {
 
   arrOfSrces.forEach((source, idx) => {
     if (modalImgEl.src === source) {
-      modalImgEl.src = '';
+      clearAttr();
+      modalImgEl.alt = arrOfDescr[idx - 1];
       return (modalImgEl.src = arrOfSrces[idx - 1]);
     }
   });
