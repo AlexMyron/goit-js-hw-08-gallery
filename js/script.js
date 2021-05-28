@@ -49,12 +49,12 @@ function onClickModalOpen(e) {
 
   modalEl.classList.add('is-open');
 
-  updateAttr(e);
+  updateAttr(e.target.dataset.source, e.target.alt);
 }
 
-function updateAttr(e) {
-  modalImgEl.src = e.target.dataset.source;
-  modalImgEl.alt = e.target.alt;
+function updateAttr(src, alt) {
+  modalImgEl.src = src;
+  modalImgEl.alt = alt;
 }
 
 function onKeydownBtnModalClose(e) {
@@ -80,12 +80,7 @@ function onClickOverlayModalClose(e) {
 
 function closeModal() {
   modalEl.classList.remove('is-open');
-  clearAttr();
-}
-
-function clearAttr() {
-  modalImgEl.alt = '';
-  modalImgEl.src = '';
+  updateAttr('', '');
 }
 
 function onKeydownNextImg(e) {
@@ -99,7 +94,7 @@ function onKeydownNextImg(e) {
   let bufferValue;
   arrOfSrces.forEach((source, idx) => {
     if (modalImgEl.src === source) {
-      clearAttr();
+      updateAttr('', '');
       modalImgEl.alt = arrOfDescr[idx + 1];
       bufferValue = arrOfSrces[idx + 1];
     }
@@ -114,7 +109,7 @@ function onKeydownPrewImg(e) {
 
   arrOfSrces.forEach((source, idx) => {
     if (modalImgEl.src === source) {
-      clearAttr();
+      updateAttr('', '');
       modalImgEl.alt = arrOfDescr[idx - 1];
       return (modalImgEl.src = arrOfSrces[idx - 1]);
     }
